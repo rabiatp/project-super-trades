@@ -1,30 +1,28 @@
-import { type } from "os";
-import { share } from "rxjs";
+import { Column, DataType, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
 import { Share } from "src/share/share.entity";
-import { Trade } from "src/trade/trade.entity";
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, SelectQueryBuilder } from "typeorm";
+import Trade from "src/trade/trade.entity";
 
-@Entity()
-export class UserPortfolio extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid', { name: 'user_id' })
+@Table({ tableName: 'USERPORTFOLİO' })
+export class UserPortfolio extends Model<UserPortfolio> {
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+        unique: true,
+        primaryKey: true
+    })
     id: string
 
-    @Column({ name: 'user_first_name' })
-    userFirstName: string
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    name: string
 
-    @Column({ name: 'user_last_name' })
-    userLastName: string
-
-    @OneToMany(
-        () => Share,
-        share => share.userPortfolio
-    )
+    @HasMany(() => Share)
     share: Share[]
 
-    @OneToMany(
-        () => Trade,
-        trade => trade.userPortfolio
-    )
-    trade: Trade
+    @HasMany(() => Trade)
+    trade: Trade[]
 
 }

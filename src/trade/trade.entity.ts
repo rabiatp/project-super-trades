@@ -1,34 +1,44 @@
-import { Share } from "src/share/share.entity";
-import { UserPortfolio } from "src/user/user.entity";
-import { BaseEntity, Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Share } from 'src/share/share.entity';
+import { UserPortfolio } from 'src/user/user.entity';
 
-@Entity()
-export class Trade extends BaseEntity {
-    // @Column()
-    // type: 'BUY' | 'SELL'
-    @PrimaryGeneratedColumn('uuid', { name: "trade_id" })
-    id: string
+@Table
+export default class Trade extends Model<Trade> {
+    @Column({
+        type: DataType.ENUM('BUY', 'SELL'),
+        allowNull: false,
+    })
+    type!: 'BUY' | 'SELL';
 
-    @Column({ nullable: false })
-    shareId: string
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+    })
+    quantity!: number;
 
-    @Column({ nullable: false })
-    portfolioId: string
+    @Column({
+        type: DataType.DECIMAL(10, 2),
+        allowNull: false,
+    })
+    price!: number;
 
-    @Column()
-    price: number
+    @ForeignKey(() => Share)
+    @Column({
+        type: DataType.STRING(3),
+        allowNull: false,
+    })
+    shareSymbol!: string;
 
-    @Column()
-    quantity: number
+    @BelongsTo(() => Share)
+    share!: Share;
 
+    @ForeignKey(() => UserPortfolio)
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+    })
+    portfolioId!: number;
 
-    @ManyToOne(() => Share, share => share.trade)
-    @JoinColumn({ name: 'share_id' })
-    share: Share
-
-    @ManyToOne(() => UserPortfolio, userPortfolio => userPortfolio.trade)
-    @JoinColumn({ name: 'user_id' })
-    userPortfolio: UserPortfolio
-
-
+    @BelongsTo(() => UserPortfolio)
+    portfolio!: UserPortfolio;
 }

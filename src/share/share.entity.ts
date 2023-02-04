@@ -1,48 +1,39 @@
-import { IsUppercase, Length } from "class-validator";
-import { trace } from "console";
-import { Trade } from "src/trade/trade.entity";
-import { UserPortfolio } from "src/user/user.entity";
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
-
-@Entity()
-
-export class Share extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid', { name: 'share_id' })
-    id: number;
-
+import { Column, Model, Table, DataType, IsUppercase, PrimaryKey, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript';
+import Trade from 'src/trade/trade.entity';
+import { UserPortfolio } from 'src/user/user.entity';
+@Table({
+    tableName: 'Shares',
+})
+export class Share extends Model<Share> {
     @Column({
-        type: "varchar",
+        type: DataType.STRING(3),
         unique: true,
-        length: 3,
-        nullable: true,
-
+        allowNull: false,
+        validate: {
+            is: /^[A-Z]{3}$/
+        }
     })
-    @IsUppercase()
     symbol: string;
 
     @Column({
-        type: 'decimal',
-        precision: 10,
-        scale: 2
+        type: DataType.DECIMAL(10, 2),
+        allowNull: false,
     })
     rate: number;
 
     @Column({
-        type: "date",
-        nullable: false
+        type: DataType.DATE,
+        allowNull: false,
     })
-    lastUpdated: Date
+    lastUpdated: Date;
 
-    @OneToMany(
-        () => Trade,
-        trade => trade.share
-    )
-    trade: Trade
+    @HasMany(() => Trade)
+    trade: Trade[]
 
-    @ManyToOne(
-        () => UserPortfolio,
-        userPortfolio => userPortfolio.share
-    )
-    @JoinColumn({ name: 'user_id' })
+    @BelongsTo(() => UserPortfolio)
     userPortfolio: UserPortfolio
+
+    @ForeignKey(() => UserPortfolio)
+    @Column
+    portfolioId: number;
 }

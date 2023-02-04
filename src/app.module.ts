@@ -6,6 +6,13 @@ import { AppService } from './app.service';
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: 'postgres',
+    host: 'localhost',
+    port: 5432,
+    username: 'postgres',
+    password: '254798',
+    database: 'Doctor Project',
+    entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    synchronize: true
 
   })],
   controllers: [AppController],

@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
+import { SequelizeModule } from '@nestjs/sequelize';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Sequelize } from 'sequelize-typescript';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Share } from './share/share.entity';
@@ -9,14 +11,15 @@ import { UserPortfolio } from './user/user.entity';
 import { UserService } from './user/user.service';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    type: 'postgres',
+  imports: [SequelizeModule.forRoot({
+    dialect: 'postgres',
     host: 'localhost',
     port: 5432,
     username: 'postgres',
     password: '254798',
     database: 'Doctor Project',
-    entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    autoLoadModels: true,
+    //    entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true
   }),
     UserPortfolio, Share, Trade],

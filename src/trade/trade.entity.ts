@@ -23,22 +23,16 @@ export default class Trade extends Model<Trade> {
     price!: number;
 
     @ForeignKey(() => Share)
-    @Column({
-        type: DataType.STRING(3),
-        allowNull: false,
-    })
-    shareSymbol!: string;
+    @Column
+    symbol!: string;
 
     @BelongsTo(() => Share)
     share!: Share;
 
     @ForeignKey(() => UserPortfolio)
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false,
-    })
-    portfolioId!: number;
+    @Column
+    portfolioId!: string;
 
     @BelongsTo(() => UserPortfolio)
-    portfolio!: UserPortfolio;
+    userPortfolio!: UserPortfolio;
 }

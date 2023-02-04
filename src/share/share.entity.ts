@@ -1,8 +1,8 @@
-import { Column, Model, Table, DataType, IsUppercase, PrimaryKey, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript';
+import { Column, Model, Table, DataType, IsUppercase, PrimaryKey, ForeignKey, BelongsTo, HasMany, HasOne } from 'sequelize-typescript';
 import Trade from 'src/trade/trade.entity';
 import { UserPortfolio } from 'src/user/user.entity';
 @Table({
-    tableName: 'Shares',
+    tableName: 'Share',
 })
 export class Share extends Model<Share> {
     @Column({
@@ -10,6 +10,7 @@ export class Share extends Model<Share> {
         unique: true,
         allowNull: false,
         validate: {
+            IsUppercase: true,
             is: /^[A-Z]{3}$/
         }
     })
@@ -30,10 +31,11 @@ export class Share extends Model<Share> {
     @HasMany(() => Trade)
     trade: Trade[]
 
+    @ForeignKey(() => UserPortfolio)
+    @Column
+    userPortfolioId: string;
+
     @BelongsTo(() => UserPortfolio)
     userPortfolio: UserPortfolio
 
-    @ForeignKey(() => UserPortfolio)
-    @Column
-    portfolioId: number;
 }

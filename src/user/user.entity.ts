@@ -1,4 +1,4 @@
-import { Column, DataType, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { Column, DataType, HasMany, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
 import { Share } from "src/share/share.entity";
 import Trade from "src/trade/trade.entity";
 
@@ -6,10 +6,13 @@ import Trade from "src/trade/trade.entity";
 export class UserPortfolio extends Model<UserPortfolio> {
 
     @Column({
-        type: DataType.STRING,
-        allowNull: false,
-        unique: true,
-        primaryKey: true
+        type: DataType.UUID,
+        primaryKey: true,
+        autoIncrement: true,
+        references: {
+            model: 'UserPortfolio',
+            key: 'userPortfolioId'
+        }
     })
     id: string
 
@@ -19,7 +22,11 @@ export class UserPortfolio extends Model<UserPortfolio> {
     })
     name: string
 
-    @HasMany(() => Share)
+    @HasMany(() => Share,
+        {
+            foreignKey: 'userPortfolioId',
+            onDelete: 'cascade'
+        })
     share: Share[]
 
     @HasMany(() => Trade)

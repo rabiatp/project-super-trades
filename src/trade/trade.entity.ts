@@ -6,7 +6,7 @@ import { BaseEntity, Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryG
 export class Trade extends BaseEntity {
     // @Column()
     // type: 'BUY' | 'SELL'
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryGeneratedColumn('uuid', { name: "trade_id" })
     id: string
 
     @Column({ nullable: false })

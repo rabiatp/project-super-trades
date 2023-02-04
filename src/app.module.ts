@@ -2,7 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Share } from './share/share.entity';
+import { Trade } from './trade/trade.entity';
 import { UserController } from './user/user.controller';
+import { UserPortfolio } from './user/user.entity';
 import { UserService } from './user/user.service';
 
 @Module({
@@ -15,8 +18,8 @@ import { UserService } from './user/user.service';
     database: 'Doctor Project',
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true
-
-  })],
+  }),
+    UserPortfolio, Share, Trade],
   controllers: [AppController, UserController],
   providers: [AppService, UserService],
 })

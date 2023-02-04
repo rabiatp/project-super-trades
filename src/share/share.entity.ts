@@ -2,16 +2,16 @@ import { IsUppercase, Length } from "class-validator";
 import { trace } from "console";
 import { Trade } from "src/trade/trade.entity";
 import { UserPortfolio } from "src/user/user.entity";
-import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity()
 
 export class Share extends BaseEntity {
-    @PrimaryGeneratedColumn({ name: 'share_id' })
+    @PrimaryGeneratedColumn('uuid', { name: 'share_id' })
     id: number;
 
     @Column({
-        type: "text",
+        type: "varchar",
         unique: true,
         length: 3,
         nullable: true,
@@ -39,9 +39,10 @@ export class Share extends BaseEntity {
     )
     trade: Trade
 
-    @OneToMany(
+    @ManyToOne(
         () => UserPortfolio,
         userPortfolio => userPortfolio.share
     )
+    @JoinColumn({ name: 'user_id' })
     userPortfolio: UserPortfolio
 }

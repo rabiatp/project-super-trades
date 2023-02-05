@@ -10,10 +10,6 @@ export class UserPortfolio extends Model<UserPortfolio> {
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
-        // references: {
-        //     model: 'UserPortfolio',
-        //     key: 'userPortfolioId'
-        // }
     })
     id: number
 
@@ -23,12 +19,8 @@ export class UserPortfolio extends Model<UserPortfolio> {
     })
     name: string
 
-    // @HasMany(() => Share,
-    //     {
-    //         foreignKey: 'userPortfolioId',
-    //         onDelete: 'cascade'
-    //     })
-    // share: Share[]
+    @HasMany(() => Share)
+    shares: Share[]
 
     @HasMany(() => Trade)
     trade: Trade[]

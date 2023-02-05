@@ -12,15 +12,15 @@ export default class Trade extends Model<Trade> {
 
     @Column({
         type: DataType.INTEGER,
-        allowNull: false,
+        allowNull: true,
     })
-    quantity!: number;
+    quantity?: number;
 
     @Column({
-        type: DataType.DECIMAL(10, 2),
-        allowNull: false,
+        type: DataType.DECIMAL,
+        allowNull: true,
     })
-    price!: number;
+    price?: number;
 
     @ForeignKey(() => Share)
     @Column
@@ -31,7 +31,7 @@ export default class Trade extends Model<Trade> {
 
     @ForeignKey(() => UserPortfolio)
     @Column
-    portfolioId!: string;
+    portfolioId!: number;
 
     @BelongsTo(() => UserPortfolio)
     userPortfolio!: UserPortfolio;

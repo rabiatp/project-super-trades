@@ -9,6 +9,7 @@ export class Share extends Model<Share> {
         type: DataType.STRING(3),
         unique: true,
         allowNull: false,
+        primaryKey: true,
         validate: {
             isUppercase: true,
             is: /^[A-Z]{3}$/
@@ -22,15 +23,20 @@ export class Share extends Model<Share> {
     })
     rate: number;
 
+    @Column({
+        type: DataType.DECIMAL,
+        allowNull: false,
+    })
+    price: number;
 
     @HasMany(() => Trade)
     trade: Trade[]
 
-    // @ForeignKey(() => UserPortfolio)
-    // @Column
-    // userPortfolioId: string;
+    @ForeignKey(() => UserPortfolio)
+    @Column
+    portfolioId: number;
 
-    // @BelongsTo(() => UserPortfolio)
-    // userPortfolio: UserPortfolio
+    @BelongsTo(() => UserPortfolio)
+    portfolio: UserPortfolio
 
 }

@@ -2,19 +2,20 @@ import { Column, DataType, HasMany, HasOne, Model, PrimaryKey, Table } from "seq
 import { Share } from "src/share/share.entity";
 import Trade from "src/trade/trade.entity";
 
-@Table({ tableName: 'USERPORTFOLİO' })
+@Table({ tableName: 'UserPortfolio' })
 export class UserPortfolio extends Model<UserPortfolio> {
 
     @Column({
-        type: DataType.UUID,
+        type: DataType.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        references: {
-            model: 'UserPortfolio',
-            key: 'userPortfolioId'
-        }
+        allowNull: false,
+        // references: {
+        //     model: 'UserPortfolio',
+        //     key: 'userPortfolioId'
+        // }
     })
-    id: string
+    id: number
 
     @Column({
         type: DataType.STRING,
@@ -22,12 +23,12 @@ export class UserPortfolio extends Model<UserPortfolio> {
     })
     name: string
 
-    @HasMany(() => Share,
-        {
-            foreignKey: 'userPortfolioId',
-            onDelete: 'cascade'
-        })
-    share: Share[]
+    // @HasMany(() => Share,
+    //     {
+    //         foreignKey: 'userPortfolioId',
+    //         onDelete: 'cascade'
+    //     })
+    // share: Share[]
 
     @HasMany(() => Trade)
     trade: Trade[]

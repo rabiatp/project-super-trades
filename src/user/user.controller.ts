@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Res, UseGuards } from '@nestjs/common';
 import { response } from 'express';
 import { UserPortfolio } from './user.entity';
 import { UserService } from './user.service';
@@ -14,6 +14,7 @@ export class UserController {
             newUserPortfolio
         })
     }
+
     @Get()
     async fetchAll(@Res() response) {
         const userPortfolio = await this.userPortfolioService.findAll();
@@ -21,6 +22,7 @@ export class UserController {
             userPortfolio
         })
     }
+
     @Get('/:id')
     async findById(@Res() response, @Param('id') id) {
         const userPortfolio = await this.userPortfolioService.findOne(id);
@@ -28,4 +30,19 @@ export class UserController {
             userPortfolio
         })
     }
+
+    @Delete(':id')
+    async delete(@Res() response, @Param('id') id) {
+        const deleteUserPortfolio = await this.userPortfolioService.deleteUserPortfolio(id);
+        return response.status(HttpStatus.OK).json({
+            deleteUserPortfolio
+        })
+    }
+
+    @Patch(':id')
+    async update(@Param('id') id, @Body() newData: Partial<UserPortfolio>) {
+        return await this.userPortfolioService.updateUserPortfolio(id, newData)
+    }
 }
+
+

@@ -10,9 +10,9 @@ export class Share extends Model<Share> {
         unique: true,
         allowNull: false,
         validate: {
-            IsUppercase: true,
+            isUppercase: true,
             is: /^[A-Z]{3}$/
-        }
+        },
     })
     symbol: string;
 
@@ -22,20 +22,15 @@ export class Share extends Model<Share> {
     })
     rate: number;
 
-    @Column({
-        type: DataType.DATE,
-        allowNull: false,
-    })
-    lastUpdated: Date;
 
     @HasMany(() => Trade)
     trade: Trade[]
 
-    @ForeignKey(() => UserPortfolio)
-    @Column
-    userPortfolioId: string;
+    // @ForeignKey(() => UserPortfolio)
+    // @Column
+    // userPortfolioId: string;
 
-    @BelongsTo(() => UserPortfolio)
-    userPortfolio: UserPortfolio
+    // @BelongsTo(() => UserPortfolio)
+    // userPortfolio: UserPortfolio
 
 }

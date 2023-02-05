@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { UserPortfolio } from './user.entity';
 
@@ -14,7 +14,7 @@ export class UserService {
         return this.userPortfolioModel.findAll()
     }
 
-    async findOne(id: string): Promise<UserPortfolio> {
+    async findOne(id: number): Promise<UserPortfolio> {
         return this.userPortfolioModel.findOne({
             where: {
                 id
@@ -26,9 +26,20 @@ export class UserService {
         return this.userPortfolioModel.create(userPortfolio)
     }
 
-    // async updateUserPortfolio(id: string, userPortfolio: UserPortfolio) {
-    //     return this.userPortfolioModel.update(id, {
-    //         ...(userPortfolio.name && { name: userPortfolio.name })
-    //     })
-    // }
+    async deleteUserPortfolio(id: number) {
+        return this.userPortfolioModel.destroy({
+            where: {
+                id: id
+            }
+        })
+    }
+
+
+    async updateUserPortfolio(id: number, data: Partial<UserPortfolio>): Promise<UserPortfolio> {
+        const portfolio = await this.userPortfolioModel.findByPk(id);
+        if (!portfolio) {
+            throw new NotFoundException(`Portfolio with id ${id} not found`);
+        }
+        return portfolio.update(data);
+    }
 }
